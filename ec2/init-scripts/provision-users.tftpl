@@ -1,0 +1,18 @@
+#!/bin/bash
+
+cat <<EOT > /bin/chuser
+#!/bin/bash
+echo "Enter username"
+read username
+
+su - \$username
+EOT
+
+chmod +x /bin/chuser
+echo "/bin/chuser" >> /etc/shells
+
+useradd bastion --shell /bin/chuser
+%{ for username, password in students }
+useradd ${username}
+echo "${password}" | passwd ${username} --stdin;
+%{ endfor ~}
