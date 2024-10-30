@@ -18,7 +18,7 @@ import string
 import requests
 
 
-TEST_MODE = True
+TEST_MODE = False
 DEBUG = False
 
 students_file = os.environ['CANVAS_STUDENTS_FILE']
