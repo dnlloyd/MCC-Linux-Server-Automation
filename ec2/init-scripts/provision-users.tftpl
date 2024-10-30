@@ -2,7 +2,7 @@
 
 cat <<EOT > /bin/chuser
 #!/bin/bash
-echo "Enter username"
+echo "Enter username: "
 read username
 
 su - \$username
@@ -12,7 +12,13 @@ chmod +x /bin/chuser
 echo "/bin/chuser" >> /etc/shells
 
 useradd bastion --shell /bin/chuser
-%{ for username, password in students }
-useradd ${username}
-echo "${password}" | passwd ${username} --stdin;
+
+%{ for user, user_info in students }
+useradd ${user}
+echo ${user_info["password"]} | passwd ${user} --stdin
+chage -d 0 ${user}
 %{ endfor ~}
+
+yum install httpd -y
+systemctl start httpd.service
+systemctl enable httpd.service

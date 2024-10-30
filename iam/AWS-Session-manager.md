@@ -1,10 +1,14 @@
 # AWS Session manager
 
 https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-getting-started.html
+
 https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-getting-started-restrict-access.html
+
 https://docs.aws.amazon.com/systems-manager/latest/userguide/session-preferences-shell-config.html
 
-## 1. Add to IAM group
+https://docs.aws.amazon.com/systems-manager/latest/userguide/getting-started-restrict-access-quickstart.html
+
+## 1. Add to permission set as Inline Policy
 
 **Policy**
 
@@ -19,7 +23,8 @@ https://docs.aws.amazon.com/systems-manager/latest/userguide/session-preferences
                 "ssm:SendCommand"
             ],
             "Resource": [
-                "arn:aws:ec2:us-east-1:166865586247:instance/*"
+                "arn:aws:ec2:us-east-1:166865586247:instance/*",
+                "arn:aws:ssm:us-east-1:166865586247:document/SSM-SessionManagerRunShell"
             ]
         },
         {

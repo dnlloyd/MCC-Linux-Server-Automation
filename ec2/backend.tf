@@ -1,8 +1,7 @@
-# Uncomment if using s3 backend, otherwise state will be written locally
-# terraform {
-#   backend "s3" {
-#     bucket       = "tf-remote-state-csis-119"
-#     key          = "remote-state-ec2.tfstate"
-#     region       = "us-east-1"
-#   }
-# }
+terraform {
+  backend "s3" {
+    bucket       = "tf-mcc-linux-server-automation"
+    key          = "remote-state-ec2.tfstate"
+    region       = "us-east-1"
+  }
+}

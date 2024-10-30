@@ -1,9 +1,11 @@
-variable "canvas_students_passwords_file" {}
+# variable "canvas_students_passwords_file" {}
+variable "canvas_students_file" {}
 variable "class_name" {}
 
 locals {
-  students = jsondecode(file(var.canvas_students_passwords_file))
+  students = jsondecode(file(var.canvas_students_file))
   vpc_id = "vpc-2f83f048"
+  dns_zone_id = "Z04335951B2PXZNYP06R"
 }
 
 resource "aws_security_group" "linux_server" {
@@ -15,6 +17,14 @@ resource "aws_security_group" "linux_server" {
     description = "SSH"
     from_port   = 22
     to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "HTTP"
+    from_port   = 80
+    to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -35,17 +45,12 @@ data "aws_ami" "amazon_linux" {
 
   filter {
     name = "name"
-    values = ["al2023-ami-2023*x86_64"]
+    values = ["al2023-ami-2023.6.20241010.0-kernel-6.1-x86_64"]
   }
 
   filter {
     name = "virtualization-type"
     values = ["hvm"]
-  }
-
-  filter {
-    name = "architecture"
-    values = ["x86_64"]
   }
 }
 
@@ -93,6 +98,14 @@ resource "aws_instance" "linux" {
   # cat /var/log/cloud-init-output.log
   # /var/lib/cloud/instances/i-XXX/user-data.txt
   user_data = base64encode(templatefile("init-scripts/provision-users.tftpl", {students = local.students}))
+}
+
+resource "aws_route53_record" "www" {
+  zone_id = local.dns_zone_id
+  name    = "mcc.daniel-lloyd.net"
+  type    = "A"
+  ttl     = 300
+  records = [aws_instance.linux.public_ip]
 }
 
 output "public_ip" {

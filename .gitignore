@@ -40,3 +40,6 @@ terraform.rc
 
 # MacOS files
 **/.DS_Store
+
+# Ignore temp students file which contains sensitive data
+**/students.json
