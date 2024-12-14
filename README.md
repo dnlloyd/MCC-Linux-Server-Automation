@@ -29,7 +29,7 @@ A Terraform specific variable to provide the name of the class to Terraform.
 **Examples**
 
 ```
-export CANVAS_STUDENTS_FILE=/Users/dan/github/dnlloyd/MCC-Linux-Server-Automation/students.json
+export CANVAS_STUDENTS_FILE=$HOME/Documents/MCC/CSIS-119--Scripting-Fundamentals/2024-Fall/students.json
 export CANVAS_TOKEN=<Obfuscated>
 export CANVAS_COURSE_ID=16666
 export AWS_IDC_START_URL=https://d-9067d70b1d.awsapps.com/start
